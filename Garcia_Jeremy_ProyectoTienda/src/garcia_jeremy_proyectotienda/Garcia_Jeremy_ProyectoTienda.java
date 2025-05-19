@@ -9,25 +9,25 @@ public class Garcia_Jeremy_ProyectoTienda {
         lea.useDelimiter("\n");
 
         // Variables principales
-        double caja = 0.00;
-        double totalVentas = 0.00, totalCompras = 0.00;
-        int numVentas = 0, numCompras = 0;
-        boolean cajaCerrada = false;
-        boolean primerApertura = true;
-        double mayorGananciaVenta = 0.00, mayorGastoCompra = 0.00;
-        double totalKilosAzucar = 0, totalKilosAvena = 0, totalKilosTrigo = 0, totalKilosMaiz = 0;
+        double caja = 0.00; // Dinero actual en caja
+        double totalVentas = 0.00, totalCompras = 0.00; // Acumuladores de ventas y compras
+        int numVentas = 0, numCompras = 0; // Contadores de ventas y compras
+        boolean cajaCerrada = false; // Indica si la caja está cerrada
+        boolean primerApertura = true; // Controla si es la primera vez que se abre la caja
+        double mayorGananciaVenta = 0.00, mayorGastoCompra = 0.00; // Para registrar la venta con mayor ganancia y la compra con mayor gasto
+        double totalKilosAzucar = 0, totalKilosAvena = 0, totalKilosTrigo = 0, totalKilosMaiz = 0; // Acumuladores de kilos por tipo de producto
 
-        int opcion;
-        boolean cajaAbierta = false; // Control if caja is opened
-        boolean hayProductos = false; // Control if products are bought
+        int opcion; // Opción seleccionada en el menú
+        boolean cajaAbierta = false; // Indica si la caja está abierta
+        boolean hayProductos = false; // Indica si ya se han comprado productos
 
         // Detalles de la venta/compra actual
-        String detallesTransaccion = "";
-        double subtotalTransaccion = 0.0;
+        String detallesTransaccion = ""; // Texto descriptivo de la transacción actual
+        double subtotalTransaccion = 0.0; // Monto subtotal de la transacción actual
 
         // Proveedor actual
-        String tipoProveedorActual = "";
-        boolean hayCompras = false; // Controla si ya se hizo al menos una compra
+        String tipoProveedorActual = ""; // Tipo de proveedor de la última compra
+        boolean hayCompras = false; // Indica si ya se hizo al menos una compra
 
         // Stock variables
         double stockAzucar = 0;
@@ -37,30 +37,34 @@ public class Garcia_Jeremy_ProyectoTienda {
 
         do {
             // Mostrar el menú principal
-            System.out.println("\n------ MENU TIENDA ------");
-            System.out.println("1. Abrir Caja");
-            System.out.println("2. Ventas");
-            System.out.println("3. Compras");
-            System.out.println("4. Reportes");
-            System.out.println("5. Cierre de Caja");
-            System.out.println("6. Salir");
+            System.out.println("---------------------- MENU TIENDA ----------------------");
+            System.out.println("< 1. Abrir Caja                                       >");
+            System.out.println("< 2. Ventas                                          >");
+            System.out.println("< 3. Compras                                         >");
+            System.out.println("< 4. Reportes                                        >");
+            System.out.println("< 5. Cierre de Caja                                  >");
+            System.out.println("< 6. Salir                                           >");
+            System.out.println("-------------------------------------------------------");
             System.out.print("Seleccione una opción: ");
 
             try {
-                opcion = lea.nextInt();
+                opcion = lea.nextInt(); // Lectura de opción del usuario
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Error: Ingrese un número válido para la opción del menú.");
-                lea.next(); // Consume the invalid input
-                opcion = 0; // Invalid option, will loop again
+                lea.next(); // Consume el valor inválido
+                opcion = 0; // Opción inválida para repetir ciclo
                 continue;
             }
 
             switch (opcion) {
                 case 1: // Abrir Caja
+                    System.out.println("---------------------- Abrir Caja ----------------------");
                     if (cajaCerrada && !primerApertura) {
-                        caja = (caja * 0.40); // Lo que queda despues del cierre
-                        System.out.println("Caja abierta nuevamente. Contadores reiniciados.");
-                        // Reiniciar contadores y acumuladores
+                        // Si la caja ya fue cerrada antes, se abre con el 40% del dinero restante
+                        caja = (caja * 0.40); 
+                        System.out.println("< Caja abierta nuevamente. Contadores reiniciados. >");
+
+                        // Reiniciar contadores y acumuladores para nueva jornada
                         totalVentas = 0.00;
                         totalCompras = 0.00;
                         numVentas = 0;
@@ -81,16 +85,17 @@ public class Garcia_Jeremy_ProyectoTienda {
                         stockTrigo = 0;
                         stockMaiz = 0;
 
-                        System.out.println("Caja abierta con Lps. " + String.format("%.2f", caja));
+                        System.out.println("< Caja abierta con Lps. " + String.format("%.2f", caja) + "           >");
 
                     } else {
-                        System.out.print("Ingrese cantidad de efectivo a guardar en caja: Lps. ");
+                        // Primera apertura o intento de abrir sin cierre previo
+                        System.out.print("< Ingrese cantidad de efectivo a guardar en caja: Lps. ");
                         double efectivo = 0;
                         try {
-                            efectivo = lea.nextDouble();
+                            efectivo = lea.nextDouble(); // Lectura del efectivo a ingresar
                         } catch (java.util.InputMismatchException e) {
-                            System.out.println("Error: Ingrese un número válido para el efectivo.");
-                            lea.next(); // Consume the invalid input
+                            System.out.println("< Error: Ingrese un número válido para el efectivo. >");
+                            lea.next(); // Consume el valor inválido
                             break;
                         }
                         if (efectivo > 0) {
@@ -98,60 +103,75 @@ public class Garcia_Jeremy_ProyectoTienda {
                             primerApertura = false;
                             cajaCerrada = false;
                             cajaAbierta = true;
-                            System.out.println("Caja abierta con Lps. " + String.format("%.2f", caja));
+                            System.out.println("< Caja abierta con Lps. " + String.format("%.2f", caja) + "           >");
                         } else {
-                            System.out.println("Cantidad inválida.");
+                           System.out.println("< Cantidad inválida.");
                         }
                     }
                     break;
 
+
                 case 2: // Ventas
+                    System.out.println("---------------------- Ventas ----------------------");
+
+                    // Validaciones previas a la venta
                     if (!cajaAbierta) {
-                        System.out.println("Error: Debe abrir la caja primero (Opción 1).");
+                        System.out.println("< Error: Debe abrir la caja primero (Opción 1).   >");
+                        System.out.println("-------------------------------------------------------");
                         break;
                     }
                     if (!hayProductos) {
-                        System.out.println("Error: No hay productos en existencia. Debe realizar una compra primero (Opción 3).");
+                        System.out.println("< Error: No hay productos en existencia. Debe    >");
+                        System.out.println("< realizar una compra primero (Opción 3).       >");
+                        System.out.println("-------------------------------------------------------");
                         break;
                     }
                     if (stockAzucar <= 0 && stockAvena <= 0 && stockTrigo <= 0 && stockMaiz <= 0) {
-                        System.out.println("Error: El stock de todos los productos es insuficiente. Realice una compra (Opción 3).");
+                        System.out.println("< Error: El stock de todos los productos es      >");
+                        System.out.println("< insuficiente. Realice una compra (Opción 3).    >");
+                        System.out.println("-------------------------------------------------------");
                         break;
                     }
                     if (cajaCerrada) {
-                        System.out.println("La caja está cerrada. No se pueden realizar ventas.");
+                        System.out.println("< La caja está cerrada. No se pueden realizar ventas. >");
+                        System.out.println("-------------------------------------------------------");
                         break;
                     }
 
-                    System.out.print("Tipo de cliente (A/B/C): ");
-                    String tipoCliente = lea.next().toUpperCase();
-                    System.out.println("------------------");
+                    // Selección del tipo de cliente
+                    System.out.print("< Tipo de cliente (A/B/C): ");
+                    String tipoCliente = lea.next().toUpperCase(); // Cliente puede ser A, B o C
+                    System.out.println("< ------------------                           >");
 
                     boolean seguirVendiendo = true;
                     double subtotal = 0.00;
 
-                    // Resetear detalles de la transaccion
+                    // Reiniciar detalles de transacción para nueva venta
                     detallesTransaccion = "";
                     subtotalTransaccion = 0.0;
 
+                    // Ciclo para agregar productos a la venta
                     while (seguirVendiendo) {
-                        System.out.print("Ingrese código del producto a vender (1-Azúcar, 2-Avena, 3-Trigo, 4-Maíz): ");
+                        System.out.print("< Ingrese código del producto a vender (1-Azúcar, 2-Avena, 3-Trigo, 4-Maíz): ");
                         int cod = 0;
                         try {
-                            cod = lea.nextInt();
+                            cod = lea.nextInt(); // Lectura del código de producto
                         } catch (java.util.InputMismatchException e) {
-                            System.out.println("Error: Ingrese un número válido para el código del producto.");
+                            System.out.println("< Error: Ingrese un número válido para el código del producto. >");
                             lea.next();
                             continue;
                         }
+
+                        // Inicialización de variables para validación y cálculo
                         double precio = 0.00;
                         String nombreProducto = "";
                         boolean puedeComprar = false;
                         double kilos = 0.0;
                         boolean hayStockSuficienteProducto = false;
                         boolean cantidadValida = false;
-                        double kilosFinal = 0.0; // Variable para almacenar la cantidad válida
+                        double kilosFinal = 0.0;
 
+                        // Determinar si el cliente puede comprar el producto según tipo y disponibilidad
                         switch (cod) {
                             case 1:
                                 nombreProducto = "Azúcar";
@@ -179,34 +199,36 @@ public class Garcia_Jeremy_ProyectoTienda {
                                 break;
                             default:
                                 System.out.println("Código de producto inválido.");
-                                continue; // Volver a pedir el código del producto
+                                continue;
                         }
 
+                        // Validaciones de permisos y stock
                         if (!puedeComprar) {
-                            System.out.println("Este cliente no puede comprar este producto.");
-                            continue; // Volver a pedir el código del producto
+                            System.out.println("< Este cliente no puede comprar este producto.    >");
+                            continue;
                         } else if (!hayStockSuficienteProducto) {
-                            System.out.println("Stock insuficiente de " + nombreProducto + ".");
-                            continue; // Volver a pedir el código del producto
+                            System.out.println("< Stock insuficiente de " + nombreProducto + ".        >");
+                            continue;
                         }
 
+                        // Solicitar cantidad en kilogramos
                         while (!cantidadValida) {
-                            System.out.print("¿Cuántos kilogramos desea comprar de " + nombreProducto + "?: ");
+                            System.out.print("< ¿Cuántos kilogramos desea comprar de " + nombreProducto + "?: ");
                             try {
                                 kilos = lea.nextDouble();
                                 if (kilos > 0) {
                                     cantidadValida = true;
-                                    kilosFinal = kilos; // Almacenar la cantidad válida
+                                    kilosFinal = kilos;
                                 } else {
                                     System.out.println("Cantidad no válida. Ingrese un valor mayor que cero.");
                                 }
                             } catch (java.util.InputMismatchException e) {
                                 System.out.println("Error: Ingrese un número válido para los kilogramos.");
-                                lea.next(); // Consume the invalid input
+                                lea.next();
                             }
 
+                            // Validar si hay suficiente stock para la cantidad deseada
                             if (cantidadValida) {
-                                //Sufficient stock check
                                 boolean haySuficienteStock = false;
                                 switch (cod) {
                                     case 1:
@@ -224,13 +246,14 @@ public class Garcia_Jeremy_ProyectoTienda {
                                 }
 
                                 if (haySuficienteStock) {
+                                    // Calcular costo de la venta y actualizar totales
                                     double costoVenta = kilosFinal * precio;
                                     subtotal += costoVenta;
                                     detallesTransaccion += String.format("%s - %.2f kg x Lps. %.2f = Lps. %.2f\n",
                                             nombreProducto, kilosFinal, precio, costoVenta);
                                     subtotalTransaccion += costoVenta;
 
-                                    //Update stock
+                                    // Actualizar stock y acumuladores por producto
                                     switch (cod) {
                                         case 1:
                                             stockAzucar -= kilosFinal;
@@ -250,42 +273,47 @@ public class Garcia_Jeremy_ProyectoTienda {
                                             break;
                                     }
 
+                                    // Confirmación al usuario
                                     System.out.println("Agregado: " + kilosFinal + " kg de " + nombreProducto + " a Lps. " + String.format("%.2f", precio));
                                     System.out.println("------------------");
                                 } else {
                                     System.out.println("No hay suficiente stock de " + nombreProducto + " disponible.");
-                                    cantidadValida = false; // Volver a pedir los kilogramos
+                                    cantidadValida = false;
                                 }
                             }
                         }
 
-                        System.out.print("¿Desea comprar otro producto? (si/no): ");
+                        // Preguntar si desea seguir vendiendo
+                        System.out.print("< ¿Desea comprar otro producto? (si/no): ");
                         String respuesta = lea.next();
                         seguirVendiendo = respuesta.equalsIgnoreCase("si");
-                        System.out.println("------------------");
+                        System.out.println("< ------------------                           >");
                     }
 
-                    // Facturación
+                    // Calcular y mostrar la factura si hubo productos vendidos
                     if (subtotal > 0) {
                         double descuento = 0.00;
                         if (subtotal >= 5000) {
-                            descuento = subtotal * 0.10;
+                            descuento = subtotal * 0.10; // 10% de descuento
                         } else if (subtotal >= 1000) {
-                            descuento = subtotal * 0.05;
+                            descuento = subtotal * 0.05; // 5% de descuento
                         }
 
-                        double impuesto = (subtotal - descuento) * 0.07;
-                        double total = subtotal - descuento + impuesto;
+                        double impuesto = (subtotal - descuento) * 0.07; // 7% de impuesto
+                        double total = subtotal - descuento + impuesto; // Total final a pagar
 
-                        System.out.println("\n--- Factura ---");
-                        System.out.println("Detalle de la compra:\n" + detallesTransaccion);
-                        System.out.println("----------------");
-                        System.out.println("Subtotal: Lps. " + String.format("%.2f", subtotalTransaccion));
-                        System.out.println("Descuento: Lps. " + String.format("%.2f", descuento));
-                        System.out.println("Impuesto (7%): Lps. " + String.format("%.2f", impuesto));
-                        System.out.println("Total a pagar: Lps. " + String.format("%.2f", total));
-                        System.out.println("----------------");
+                        // Imprimir factura
+                        System.out.println("---------------------- FACTURA ----------------------");
+                        System.out.println("< Detalle de la compra:                          >");
+                        System.out.print(detallesTransaccion);
+                        System.out.println("< ---------------------------------------------- >");
+                        System.out.println("< Subtotal: Lps. " + String.format("%.2f", subtotalTransaccion) + "                   >");
+                        System.out.println("< Descuento: Lps. " + String.format("%.2f", descuento) + "                    >");
+                        System.out.println("< Impuesto (7%): Lps. " + String.format("%.2f", impuesto) + "                 >");
+                        System.out.println("< Total a pagar: Lps. " + String.format("%.2f", total) + "                  >");
+                        System.out.println("-------------------------------------------------------");
 
+                        // Actualizar caja y estadísticas
                         caja += total;
                         totalVentas += total;
                         numVentas++;
@@ -295,11 +323,17 @@ public class Garcia_Jeremy_ProyectoTienda {
                     }
                     break;
 
+
                 case 3: // Compras
+                    System.out.println("---------------------- Compras ----------------------");
+
+                    // Validar si la caja está abierta
                     if (!cajaAbierta) {
                         System.out.println("Error: Debe abrir la caja primero (Opción 1).");
                         break;
                     }
+
+                    // Verificar si la caja ya está cerrada
                     if (cajaCerrada) {
                         System.out.println("La caja está cerrada. No se pueden realizar compras.");
                         break;
@@ -309,38 +343,46 @@ public class Garcia_Jeremy_ProyectoTienda {
                     System.out.print("Tipo de proveedor (A/B/C): ");
                     String tipoProveedor = lea.next().toUpperCase();
 
-                    //Basic validation of provider type
+                    // Validación básica del tipo de proveedor
                     while (!tipoProveedor.equals("A") && !tipoProveedor.equals("B") && !tipoProveedor.equals("C")) {
                         System.out.println("Tipo de proveedor inválido. Debe ser A, B o C.");
                         System.out.print("Tipo de proveedor (A/B/C): ");
                         tipoProveedor = lea.next().toUpperCase();
                     }
-                    tipoProveedorActual = tipoProveedor; // Actualizar el proveedor actual
-                    hayCompras = true; // Marcar que se ha seleccionado un proveedor
+
+                    tipoProveedorActual = tipoProveedor; // Guardar tipo de proveedor actual
+                    hayCompras = true; // Marcar que ya se hicieron compras
 
                     boolean seguirComprandoProveedor = true;
+
+                    // Inicia ciclo para realizar compras mientras el usuario lo desee
                     while (seguirComprandoProveedor) {
                         System.out.print("Ingrese código del producto a comprar (1-Azúcar, 2-Avena, 3-Trigo, 4-Maíz): ");
                         int codCompra = 0;
+
+                        // Validar que el código ingresado sea numérico
                         try {
                             codCompra = lea.nextInt();
                         } catch (java.util.InputMismatchException e) {
                             System.out.println("Error: Ingrese un número válido para el código del producto.");
-                            lea.next(); // Consume the invalid input
-                            continue;
+                            lea.next(); // Limpiar entrada inválida
+                            continue; // Volver a solicitar código
                         }
+
+                        // Variables para almacenar datos del producto y compra
                         double precioCompra = 0.00;
                         String nombreProductoCompra = "";
                         boolean puedeProveer = false;
                         double kilosCompra = 0.0;
                         double totalCompra = 0.0;
                         boolean cantidadValidaCompra = false;
-                        double kilosCompraFinal = 0.0; // Variable para almacenar la cantidad válida
+                        double kilosCompraFinal = 0.0; // Cantidad válida final
 
-                        // Resetear detalles de la transaccion
+                        // Resetear detalles de la transacción actual
                         detallesTransaccion = "";
                         subtotalTransaccion = 0.0;
 
+                        // Determinar si el proveedor puede vender ese producto
                         switch (codCompra) {
                             case 1: // Azúcar
                                 nombreProductoCompra = "Azúcar";
@@ -368,50 +410,56 @@ public class Garcia_Jeremy_ProyectoTienda {
                                 break;
                             default:
                                 System.out.println("Código de producto inválido.");
-                                continue; // Volver a preguntar el código del producto
+                                continue; // Volver a pedir código de producto
                         }
 
+                        // Verificar si el proveedor puede vender ese producto
                         if (!puedeProveer) {
                             System.out.println("Proveedor no vende dicho producto.");
                             System.out.print("¿Desea intentar comprar otro producto de este proveedor? (si/no): ");
                             String respuestaIntentoNuevo = lea.next();
                             seguirComprandoProveedor = respuestaIntentoNuevo.equalsIgnoreCase("si");
-                            continue; // Volver a preguntar el código del producto
+                            continue; // Volver al inicio del ciclo para pedir otro código
                         }
 
+                        // Solicitar la cantidad a comprar y validarla
                         while (!cantidadValidaCompra) {
                             System.out.print("¿Cuántos kilogramos desea comprar de " + nombreProductoCompra + "?: ");
                             try {
                                 kilosCompra = lea.nextDouble();
                                 if (kilosCompra > 0) {
                                     cantidadValidaCompra = true;
-                                    kilosCompraFinal = kilosCompra; // Almacenar la cantidad válida
+                                    kilosCompraFinal = kilosCompra; // Guardar la cantidad válida
                                 } else {
                                     System.out.println("Cantidad no válida. Ingrese un valor mayor que cero.");
                                 }
                             } catch (java.util.InputMismatchException e) {
                                 System.out.println("Error: Ingrese un número válido para los kilogramos.");
-                                lea.next();
+                                lea.next(); // Limpiar entrada inválida
                             }
                         }
 
-                        // Mover la lógica de compra dentro del bloque if (cantidadValidaCompra)
+                        // Si la cantidad fue válida, procesar la compra
                         if (cantidadValidaCompra) {
                             totalCompra = kilosCompraFinal * precioCompra;
 
+                            // Verificar si hay suficiente dinero en caja
                             if (caja >= totalCompra) {
-                                caja -= totalCompra;
+                                caja -= totalCompra; // Descontar de la caja
                                 totalCompras += totalCompra;
-                                numCompras++;
+                                numCompras++; // Incrementar contador de compras
+
+                                // Verificar si es el mayor gasto en una compra
                                 if (totalCompra > mayorGastoCompra) {
                                     mayorGastoCompra = totalCompra;
                                 }
 
+                                // Armar el detalle de la factura
                                 detallesTransaccion += String.format("%s - %.2f kg x Lps. %.2f = Lps. %.2f\n",
                                         nombreProductoCompra, kilosCompraFinal, precioCompra, totalCompra);
-
                                 subtotalTransaccion = totalCompra; // Solo 1 producto por compra
 
+                                // Actualizar el stock y acumulados según el producto
                                 if (codCompra == 1) {
                                     stockAzucar += kilosCompraFinal;
                                     totalKilosAzucar += kilosCompraFinal;
@@ -426,110 +474,165 @@ public class Garcia_Jeremy_ProyectoTienda {
                                     totalKilosMaiz += kilosCompraFinal;
                                 }
 
+                                // Mostrar factura de compra
                                 System.out.println("\n--- Factura de Compra ---");
                                 System.out.println("Detalle de la compra:\n" + detallesTransaccion);
                                 System.out.println("-------------------------");
                                 System.out.println("Total de la compra: Lps. " + String.format("%.2f", totalCompra));
                                 System.out.println("-------------------------");
 
-                                hayProductos = true; // Habilita Ventas
-                                seguirComprandoProveedor = false; // Se realizó la compra, salir del loop del proveedor
+                                hayProductos = true; // Permite habilitar opción de ventas
+                                seguirComprandoProveedor = false; // Salir del ciclo porque ya compró
                             } else {
                                 System.out.println("No se puede pagar la compra. No hay suficiente efectivo en caja.");
-                                seguirComprandoProveedor = false; // No se pudo comprar, salir del loop del proveedor
+                                seguirComprandoProveedor = false; // Salir porque no se pudo comprar
                             }
                         }
                     }
                     break;
 
-                case 4: // Reportes
-                    if (!cajaAbierta) {
-                        System.out.println("Error: La caja debe estar abierta para generar reportes.");
-                        
-                    }else{
 
-                    System.out.println("\n------ RESUMEN DE REPORTES ------");
+                    case 4: // Reportes
+                        System.out.println("---------------------- Reportes ----------------------");
 
-                    // Estado de Caja
-                    System.out.println("\n--- Estado de Caja ---");
-                    System.out.println("Efectivo en caja: Lps. " + String.format("%.2f", caja));
+                        // Verificar si la caja ha sido abierta; si no, no se pueden generar reportes
+                        if (!cajaAbierta) {
+                            System.out.println("< Error: La caja debe estar abierta para generar reportes. >");
+                        } else {
+                            // Encabezado del reporte
+                            System.out.println("<                                                      >");
+                            System.out.println("< ----------- RESUMEN DE REPORTES ----------- >");
+                            System.out.println("<                                                      >");
 
-                    // Total de Ventas y Compras
-                    System.out.println("\n--- Total de Ventas y Compras ---");
-                    System.out.println("Total de ventas: Lps. " + String.format("%.2f", totalVentas) + " (" + numVentas + " transacciones)");
-                    System.out.println("Total de compras: Lps. " + String.format("%.2f", totalCompras) + " (" + numCompras + " transacciones)");
+                            // Estado actual del efectivo en caja
+                            System.out.println("< ------------- Estado de Caja ------------- >");
+                            System.out.println("< Efectivo en caja: Lps. " + String.format("%.2f", caja) + "              >");
+                            System.out.println("< ----------------------------------------- >");
+                            System.out.println("<                                                      >");
 
-                    // Producto Estrella (Más Vendido)
-                    System.out.println("\n--- Producto Estrella (Más Vendido) ---");
-                    java.util.HashMap<String, Double> ventasPorProducto = new java.util.HashMap<>();
-                    ventasPorProducto.put("Azúcar", totalKilosAzucar);
-                    ventasPorProducto.put("Avena", totalKilosAvena);
-                    ventasPorProducto.put("Trigo", totalKilosTrigo);
-                    ventasPorProducto.put("Maíz", totalKilosMaiz);
+                            // Resumen de transacciones: ventas y compras
+                            System.out.println("< ------- Total de Ventas y Compras ------- >");
+                            System.out.println("< Total de ventas: Lps. " + String.format("%.2f", totalVentas) + " (" + numVentas + " transacciones)>");        
+                            System.out.println("< Total de compras: Lps. " + String.format("%.2f", totalCompras) + " (" + numCompras + " transacciones)>");
+                            System.out.println("< ----------------------------------------- >");
+                            System.out.println("<                                                      >");
 
-                    double maxKilosVendidos = 0;
-                    for (double kilos : ventasPorProducto.values()) {
-                        if (kilos > maxKilosVendidos) {
-                            maxKilosVendidos = kilos;
+                            // Producto Estrella: el que más kilogramos se ha vendido
+                            System.out.println("< ---- Producto Estrella (Más Vendido) ---- >");
+
+                            // Mapa para almacenar total de kilos vendidos por producto
+                            java.util.HashMap<String, Double> ventasPorProducto = new java.util.HashMap<>();
+                            ventasPorProducto.put("Azúcar", totalKilosAzucar);
+                            ventasPorProducto.put("Avena", totalKilosAvena);
+                            ventasPorProducto.put("Trigo", totalKilosTrigo);
+                            ventasPorProducto.put("Maíz", totalKilosMaiz);
+
+                            // Buscar la mayor cantidad de kilos vendidos entre todos los productos
+                            double maxKilosVendidos = 0;
+                            for (double kilos : ventasPorProducto.values()) {
+                                if (kilos > maxKilosVendidos) {
+                                    maxKilosVendidos = kilos;
+                                }
+                            }
+
+                            // Lista para almacenar los productos que tengan ese máximo de kilos vendidos
+                            java.util.ArrayList<String> productosEstrella = new java.util.ArrayList<>();
+                            for (java.util.Map.Entry<String, Double> entry : ventasPorProducto.entrySet()) {
+                                if (entry.getValue() == maxKilosVendidos && maxKilosVendidos > 0) {
+                                    productosEstrella.add(entry.getKey());
+                                }
+                            }
+
+                            // Mostrar los productos estrella si los hay
+                            if (!productosEstrella.isEmpty()) {
+                                System.out.println("< Producto(s) estrella (con " + String.format("%.2f", maxKilosVendidos) + " kg vendidos):>");
+                                for (String producto : productosEstrella) {
+                                    double cantidadVendida = ventasPorProducto.get(producto);
+
+                                    // Asignar número de veces vendido (aunque este dato parece mal interpretado)
+                                    int vecesVendido = 0;
+                                    if (producto.equals("Azúcar")) vecesVendido = (int) totalKilosAzucar;
+                                    else if (producto.equals("Avena")) vecesVendido = (int) totalKilosAvena;
+                                    else if (producto.equals("Trigo")) vecesVendido = (int) totalKilosTrigo;
+                                    else if (producto.equals("Maíz")) vecesVendido = (int) totalKilosMaiz;
+
+                                    System.out.println("< - " + producto + ": " + String.format("%.2f", cantidadVendida) + " kg vendidos (Vendido " + vecesVendido + " veces)>");
+                                }
+                            } else {
+                                // Si no se han hecho ventas
+                                System.out.println("< No se han realizado ventas aún.           >");
+                            }
+                            System.out.println("< ----------------------------------------- >");
+                            System.out.println("<                                                      >");
+
+                            // Mostrar cuál fue la mayor ganancia en una sola venta y el mayor gasto en una sola compra
+                            System.out.println("< ----- Mayor Venta y Mayor Compra ------ >");
+                            System.out.println("< Mayor ganancia en una venta: Lps. " + String.format("%.2f", mayorGananciaVenta) + "      >");
+                            System.out.println("< Mayor gasto en una compra: Lps. " + String.format("%.2f", mayorGastoCompra) + "       >");
+                            System.out.println("< ----------------------------------------- >");
+                            System.out.println("<                                                      >");
+
+                            // Mostrar el stock actual de cada producto
+                            System.out.println("< -------- Stock de Productos -------- >");
+                            System.out.println("< Stock de Azúcar: " + String.format("%.2f", stockAzucar) + " kg                    >");
+                            System.out.println("< Stock de Avena: " + String.format("%.2f", stockAvena) + " kg                     >");
+                            System.out.println("< Stock de Trigo: " + String.format("%.2f", stockTrigo) + " kg                     >");
+                            System.out.println("< Stock de Maíz: " + String.format("%.2f", stockMaiz) + " kg                      >");
+                            System.out.println("< ----------------------------------------- >");
+                            System.out.println("<                                                      >");
                         }
-                    }
 
-                    java.util.ArrayList<String> productosEstrella = new java.util.ArrayList<>();
-                    for (java.util.Map.Entry<String, Double> entry : ventasPorProducto.entrySet()) {
-                        if (entry.getValue() == maxKilosVendidos && maxKilosVendidos > 0) {
-                            productosEstrella.add(entry.getKey());
-                        }
-                    }
-
-                    if (!productosEstrella.isEmpty()) {
-                        System.out.println("Producto(s) estrella (con " + String.format("%.2f", maxKilosVendidos) + " kg vendidos):");
-                        for (String producto : productosEstrella) {
-                            double cantidadVendida = ventasPorProducto.get(producto);
-                            int vecesVendido = 0;
-                            if (producto.equals("Azúcar")) vecesVendido = (int)totalKilosAzucar;
-                            else if (producto.equals("Avena")) vecesVendido = (int)totalKilosAvena;
-                            else if (producto.equals("Trigo")) vecesVendido = (int)totalKilosTrigo;
-                            else if (producto.equals("Maíz")) vecesVendido = (int)totalKilosMaiz;
-
-                            System.out.println("- " + producto + ": " + String.format("%.2f", cantidadVendida) + " kg vendidos (Vendido " + vecesVendido + " veces)");
-                        }
-                    } else {
-                        System.out.println("No se han realizado ventas aún.");
-                    }
-
-                    // Mayor Venta y Mayor Compra
-                    System.out.println("\n--- Mayor Venta y Mayor Compra ---");
-                    System.out.println("Mayor ganancia en una venta: Lps. " + String.format("%.2f", mayorGananciaVenta));
-                    System.out.println("Mayor gasto en una compra: Lps. " + String.format("%.2f", mayorGastoCompra));
-
-                    // Stock de Productos
-                    System.out.println("\n--- Stock de Productos ---");
-                    System.out.println("Stock de Azúcar: " + String.format("%.2f", stockAzucar) + " kg");
-                    System.out.println("Stock de Avena: " + String.format("%.2f", stockAvena) + " kg");
-                    System.out.println("Stock de Trigo: " + String.format("%.2f", stockTrigo) + " kg");
-                    System.out.println("Stock de Maíz: " + String.format("%.2f", stockMaiz) + " kg");
-                    }
-
-                    break;
-
-                case 5: // Cierre de Caja
-                    if (!cajaAbierta) {
-                        System.out.println("Error: La caja ya está cerrada o no se ha abierto.");
+                        // Final del bloque de reportes
+                        System.out.println("-------------------------------------------------------");
                         break;
-                    }
-                    System.out.println("\n--- Cierre de Caja ---");
-                    System.out.println("Efectivo actual en caja: Lps. " + String.format("%.2f", caja));
-                    double cuarentaPorciento = caja * 0.40;
-                    System.out.println("El 40% (lo que se guarda): Lps. " + String.format("%.2f", cuarentaPorciento));
-                    System.out.println("El 60% (ganancia del día): Lps. " + String.format("%.2f", (caja - cuarentaPorciento)));
-                    cajaCerrada = true;
-                    cajaAbierta = false;
-                    System.out.println("Caja cerrada.");
-                    break;
+
+                    case 5: // Cierre de Caja
+                        // Encabezado del reporte de cierre
+                        System.out.println("---------------------- Cierre de Caja ----------------------");
+
+                        // Verifica si la caja ya está cerrada o nunca fue abierta
+                        if (!cajaAbierta) {
+                            System.out.println("< Error: La caja ya está cerrada o no se ha abierto. >");
+                            System.out.println("-------------------------------------------------------");
+                            break; // Sale del case si no se puede cerrar
+                        }
+
+                        // Si la caja está abierta, se procede con el cierre
+                        System.out.println("<                                                      >");
+                        System.out.println("< --------------- Cierre de Caja --------------- >");
+                        System.out.println("<                                                      >");
+
+                        // Muestra el efectivo actual que hay en la caja
+                        System.out.println("< Efectivo actual en caja: Lps. " + String.format("%.2f", caja) + "          >");
+
+                        // Calcula el 40% del efectivo, que se guarda
+                        double cuarentaPorciento = caja * 0.40;
+                        System.out.println("< El 40% (lo que se guarda): Lps. " + String.format("%.2f", cuarentaPorciento) + "     >");
+
+                        // El 60% restante se considera la ganancia del día
+                        System.out.println("< El 60% (ganancia del día): Lps. " + String.format("%.2f", (caja - cuarentaPorciento)) + " >");
+
+                        System.out.println("<                                                      >");
+                        System.out.println("< ---------------- Caja Cerrada ---------------- >");
+                        System.out.println("<                                                      >");
+
+                        // Marca la caja como cerrada y ya no disponible para más transacciones
+                        cajaCerrada = true;
+                        cajaAbierta = false;
+
+                        // Mensaje final de confirmación
+                        System.out.println("< Caja cerrada.                                    >");
+                        System.out.println("<                                                      >");
+                        System.out.println("-------------------------------------------------------");
+                        break;
 
                 case 6: // Salir
-                    System.out.println("Gracias por usar el sistema de la tienda.");
-                    break;
+                    System.out.println("----------------------- Salir -----------------------");
+                    System.out.println("<                                                       >");
+                    System.out.println("< ¡Gracias por usar el sistema de la tienda!          >");
+                    System.out.println("<                                                       >");
+                    System.out.println("-------------------------------------------------------");
+                    break; //Salir del programa
 
                 default:
                     System.out.println("Opción inválida. Por favor, seleccione una opción del menú.");
